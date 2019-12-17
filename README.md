@@ -130,9 +130,13 @@ during_max = cellStats(during_diff_arch, max)
 post_max = cellStats(post_diff_arch, max)
 ```
 
+Next we need to calculate the thresholds for inundated areas. These thresholds occur differently in areas that are and are not highly vegetated, so we will be accounting for both.
 ```{r}
 during_inun_thresh <- during_mean - 1.5*during_sd
 post_inun_thresh <- post_mean - 1.5*post_sd
+
+during_veg_thresh <- during_mean + 2.5*during_sd
+post_veg_thresh <- post_mean + 2.5*post_sd
 ```
 
 ### Visualizations and Reclassifying Data
