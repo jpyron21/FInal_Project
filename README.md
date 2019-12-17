@@ -23,19 +23,14 @@ In order to identify change I will be analyzing 3 SAR images, one in the month p
 It should be noted that the during-Dorian data is actually taken immediately following but has to be distinguished from the post-Dorian imagery, which was taken one month after.
 
 ### Prerequisites
-For this analysis I used 5 packages and they can be installed as shown below.
+For this analysis I used 6 packages and they can be loaded as shown below.
 ```R
-install.packages(raster)
-install.packages(rgdal)
-install.packages(sf)
-install.packages(spatstat)
-install.packages(fields)
-
 library(raster)
 library(rgdal)
 library(sf)
-library(spatstat)
-library(fields)
+library(prettymapr)
+library(markdown)
+library(ggplot2)
 ```
 
 ### Preprocessing Data
@@ -92,14 +87,6 @@ post <- raster("postDorian.tif")
 nassau <- st_read("new_providence.shp")
 ```
 
-Before starting any analysis, it is crucial to make sure that all data has the same projection. We can see below that they do.
-```R
-crs(pre)
-crs(during)
-crs(post)
-crs(nassau)
-```
-
 Since the goal is to analyze floding and the study area is an island, it is important to apply a mask as to not include the ocean in the analysis.
 ```R
 pre_masked <- mask(x = pre, mask = nassau)
@@ -107,17 +94,19 @@ during_masked <- mask(x = during, mask = nassau)
 post_masked <- mask(x = post, mask = nassau)
 ```
 
-Now it's time to reproject the data to a projected coordinate system. Typically this should be done first, but since all data had the same coordinate reference system, as show above, the order does not matter.
+Now it's time to reproject the data to a projected coordinate system. Typically this should be done first, but since all data had the same coordinate reference system, the order does not matter. This will be important for calculating area.
 ```R
+new_proj <- "+proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0"
 pre_masked <- projectRaster(pre_masked, crs=new_proj)
 during_masked <- projectRaster(during_masked, crs=new_proj)
-
+post_masked <- projectRaster(post_masked, crs=new_proj)
+nassau <- spTransform(nassau, crs(new_proj))
 ```
 
-In order to find areas of difference, the raster images are subtracted.
+In order to find areas of difference, subtract the absolute value of each raster.
 ```R
-during_diff <- during_masked - pre_masked
-post_diff <- post_masked  - pre_masked
+during_diff <- abs(during_masked) - abs(pre_masked)
+post_diff <- abs(post_masked)  - abs(pre_masked)
 ```
 
 Next it is important to change areas of no change, or 0, to NA. Before doing that, archive these masked images. We will be manipulating them a lot in the next few steps and we will need to come back to this original masked image.
@@ -188,6 +177,9 @@ legend("bottomright",
        legend = c("Flooded Areas"),
        fill = c("blue"),
        border = FALSE)
+
+prettymapr::addnortharrow(scale = 0.6, text.col = 'black', cols = c('black', 'black'))
+prettymapr::addscalebar(plotunit = 'm', widthhint = 0.25, lwd = 1, padin = c(0.15, 0.08), style = "bar", label.cex = 1.0)
 }
 ```
 
@@ -200,7 +192,27 @@ title = "Flooding in Nassau One Month Following Hurrican Dorian"
 plot_images(post_classified)
 ```
 
-It is important to obtain qualitative values from the data. Initially I considered ggplot2 for making barplots, but the 'raster' package has a barplot function that can easily read in the raster data instead of converting this data to a usable form for ggplot2, which would be computationally expensive.
+It is important to obtain qualitative values from the data. I used ggplot2 to create a simple bargraph of percent inundation to visualize these qualitative values. First, I had to calculate the area of the total landmass and the inundated areas. I set them up in a data.frame to be more compatible with ggplot.
+```R
+during_area <- (sum(!is.na(during_classified[])) * xres(during_classified) * xres(during_classified)) / 1000000
+post_area <- (sum(!is.na(post_classified[])) * xres(post_classified) * xres(during_classified)) / 1000000
+total_area <- nrow(pre_masked) * ncol(pre_masked) * xres(pre_masked) * xres(pre_masked) / 1000000
+
+df <- data.frame(
+  groups = c("One Day", "One Month"),
+  inundated = c(round((during_area/total_area)*100, digits=2), round((post_area/total_area)*100, digits=2))
+  )
+ ```
+ 
+ Finally, I created my bargraph of percent inundation vs time elapsed since Dorian. 
+ ```R
+ bp <- ggplot(data=df, aes(x=groups, y=inundated)) +
+  geom_bar(stat="identity", width = 0.6, fill="skyblue4")+
+  geom_text(aes(label=inundated), vjust=1.6, color="white", size=5)+
+  ggtitle("Flooding Prior to Hurricane Dorian")+
+  labs(x = "Time Elapsed", y = "Percent Inundated (%)")
+bp
+```
 
 ### Results and Future Study
 The objectives for this project were to test my R skills as pertaining to the scope of GEOG 693 and familiarize myself with the data. For future studies I intend to examine other single and dual polarizations, as the results from my singular 'VV' polarization analysis suggests that there are better modes for evaluating flooding in the realm of SAR data.
