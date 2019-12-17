@@ -9,6 +9,7 @@
 * [Raster Manipulation](#Raster-Manipulation)
 * [Finding Critical Values](#Finding-Critical-Values)
 * [Visualizations and Reclassifying Data](#Visualizations-and-Reclassifying-Data)
+* [Results and Future Study](#Results-and-Future-Study)
 * [Author](#Author)
 * [Sources and Acknowledgements](#Sources-and-Acknowledgements)
 ### Introduction
@@ -132,10 +133,10 @@ during_mean <- cellStats(during_diff, mean)
 post_mean <- cellStats(post_diff, mean)
 during_sd <- cellStats(during_diff, sd)
 post_sd <- cellStats(post_diff, sd)
-during_min = cellStats(during_diff_arch, min)
-post_min = cellStats(post_diff_arch, min)
-during_max = cellStats(during_diff_arch, max)
-post_max = cellStats(post_diff_arch, max)
+during_min <- cellStats(during_diff_arch, min)
+post_min <- cellStats(post_diff_arch, min)
+during_max <- cellStats(during_diff_arch, max)
+post_max <- cellStats(post_diff_arch, max)
 ```
 
 Next we need to calculate the thresholds for inundated areas. These thresholds occur differently in areas that are and are not highly vegetated, so we will be accounting for both.
@@ -187,6 +188,18 @@ legend("bottomright",
        border = FALSE)
 }
 ```
+
+To create maps of the analysis, we can initialize the title for each map and call the plot_images() function with the data and title as parameters.
+```R
+title = "Flooding in Nassau Immeidately Following Hurrican Dorian"
+plot_images(during_classified)
+
+title = "Flooding in Nassau One Month Following Hurrican Dorian"
+plot_images(post_classified)
+```
+
+### Results and Future Study
+The objectives for this project were to test my R skills as pertaining to the scope of GEOG 693 and familiarize myself with the data. For future studies I intend to examine other single and dual polarizations, as the results from my singular 'VV' polarization analysis suggests that there are better modes for evaluating flooding in the realm of SAR data.
 
 ### Author
 Work by Jaimee Pyron of West Virginia University
