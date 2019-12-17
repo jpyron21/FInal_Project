@@ -8,6 +8,7 @@
 * [Preprocessing Data](#Preprocessing-Data)
 * [Finding Critical Values](#Finding-Critical-Values)
 * [Visualizations and Reclassifying Data](#Visualizations-and-Reclassifying-Data)
+* [Author](#Author)
 * [Sources and Acknowledgements](#Sources-and-Acknowledgements)
 ### Introduction
 In the age of data science, there is a shift in geospatial processing from a traditional GIS to R. Raster processing is especially useful in R as it provides a fast way to read data and transform data in a less-complex file format. While this will provide a more complex set of instruction, the attached .Rmd file can be used to test the code.
@@ -35,4 +36,6 @@ library(fields)
 
 ### Visualizations and Reclassifying Data
 
+### Author
+Work by Jaimee Pyron (jp0160@mix.wvu.edu)
 ### Sources and Acknowledgements
