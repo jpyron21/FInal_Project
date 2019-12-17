@@ -6,7 +6,6 @@
 * [Methodology](#Methodology)
 * [Prerequisites](#Prerequisites)
 * [Preprocessing Data](#Preprocessing-Data)
-* [Raster Manipulation](#Raster-Manipulation)
 * [Finding Critical Values](#Finding-Critical-Values)
 * [Visualizations and Reclassifying Data](#Visualizations-and-Reclassifying-Data)
 * [Results and Future Study](#Results-and-Future-Study)
@@ -86,7 +85,7 @@ Export.image.toDrive({
 ```
 
 This data is sent to my drive and, once downloaded, can be read into R. Be mindful to set the working directory at the start of the project.
-```{r}
+```R
 pre <- raster("preDorian.tif")
 during <- raster("Dorian.tif")
 post <- raster("postDorian.tif")
@@ -94,20 +93,25 @@ nassau <- st_read("new_providence.shp")
 ```
 
 Before starting any analysis, it is crucial to make sure that all data has the same projection. We can see below that they do.
-```{r}
+```R
 crs(pre)
 crs(during)
 crs(post)
 crs(nassau)
 ```
 
-### Raster Manipulation
-
 Since the goal is to analyze floding and the study area is an island, it is important to apply a mask as to not include the ocean in the analysis.
 ```R
 pre_masked <- mask(x = pre, mask = nassau)
 during_masked <- mask(x = during, mask = nassau)
 post_masked <- mask(x = post, mask = nassau)
+```
+
+Now it's time to reproject the data to a projected coordinate system. Typically this should be done first, but since all data had the same coordinate reference system, as show above, the order does not matter.
+```R
+pre_masked <- projectRaster(pre_masked, crs=new_proj)
+during_masked <- projectRaster(during_masked, crs=new_proj)
+
 ```
 
 In order to find areas of difference, the raster images are subtracted.
