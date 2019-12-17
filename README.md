@@ -9,6 +9,16 @@ I will be using Sentinel-1 SAR (synthetic aperture radar) data to evaluate flood
 ### Methodology
 In order to identify change I will be analyzing 3 SAR images, one in the month prior to Dorian, one immediately following Dorian, and one a month prior to Dorian. In order to identify areas of flooding by taking the absolute value of the each images and then subtracting them. I will show the change from pre-Dorian to during-Dorian and pre-Dorian to post-Dorian.
 
+### Prerequisites
+For this analysis I used 5 packages and they can be installed as shown below.
+```R
+library(raster)
+library(rgdal)
+library(sf)
+library(spatstat)
+library(ggplot2)
+```
+
 ### Functions
 Since I am using repetitive processes on multiple datasets, I chose to utilize functions to streamline this process. 
 
