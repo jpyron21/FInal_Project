@@ -1,0 +1,164 @@
+---
+title: "Final Project"
+author: "Jaimee Pyron"
+date: "12/14/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Load packages that will be used.
+```{r}
+library(raster)
+library(rgdal)
+library(sf)
+library(prettymapr)
+library(markdown)
+library(ggplot2)
+```
+
+Read in the pre, during, and post dorian rasters. Read in the shapefile
+```{r}
+pre <- raster("preDorian.tif")
+during <- raster("Dorian.tif")
+post <- raster("postDorian.tif")
+nassau <- shapefile("new_providence.shp")
+```
+
+Mask the image so that only the landform is showing.
+```{r}
+pre_masked <- mask(x = pre, mask = nassau)
+during_masked <- mask(x = during, mask = nassau)
+post_masked <- mask(x = post, mask = nassau)
+```
+
+Reproject rasters to a projected coordinate system
+```{r}
+new_proj <- "+proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0"
+pre_masked <- projectRaster(pre_masked, crs=new_proj)
+during_masked <- projectRaster(during_masked, crs=new_proj)
+post_masked <- projectRaster(post_masked, crs=new_proj)
+nassau <- spTransform(nassau, crs(new_proj))
+```
+
+Subtract the absolute value of the rasters from one another to show areas of difference.
+```{r}
+during_diff <- abs(during_masked) - abs(pre_masked)
+post_diff <- abs(post_masked)  - abs(pre_masked)
+```
+
+Archive the during_diff and post_diff images.
+```{r}
+during_diff_arch <- during_diff
+post_diff_arch <- post_diff
+```
+
+change 0 values to NA.
+```{r}
+during_diff[during_diff == 0] <- NA
+post_diff[post_diff == 0] <- NA
+```
+
+Find inundated areas. Start by initializing variables for mean and standard deviation. Find threshold based on equation.
+All values less than these thresholds are inundated.
+```{r}
+during_mean <- cellStats(during_diff, mean)
+post_mean <- cellStats(post_diff, mean)
+during_sd <- cellStats(during_diff, sd)
+post_sd <- cellStats(post_diff, sd)
+during_inun_thresh <- during_mean - 1.5*during_sd
+post_inun_thresh <- post_mean - 1.5*post_sd
+during_min <- cellStats(during_diff_arch, min)
+during_max <- cellStats(during_diff_arch, max)
+post_min <- cellStats(post_diff_arch, min)
+post_max <- cellStats(post_diff_arch, max)
+```
+
+Identify inundated thresholds.
+```{r}
+during_inun_thresh <- during_mean - 1.5*during_sd
+post_inun_thresh <- post_mean - 1.5*post_sd
+during_veg_thresh <- during_mean + 2.5*during_sd
+post_veg_thresh <- post_mean + 2.5*post_sd
+```
+
+Create a reclassification matrix for during.
+```{r}
+reclass_during <- c(-Inf, during_inun_thresh, 1,
+                    during_inun_thresh, during_veg_thresh, NA,
+                    during_veg_thresh, Inf, 1)
+reclass_during_m <- matrix(reclass_during, ncol = 3, byrow = TRUE)
+```
+
+Create a reclassification matrix for post.
+```{r}
+reclass_post <- c(-Inf, post_inun_thresh, 1,
+                  post_inun_thresh, post_veg_thresh, NA,
+                  post_veg_thresh, Inf, 1)
+reclass_post_m <- matrix(reclass_post, ncol = 3, byrow = TRUE)
+```
+
+Initialize the reclassification
+```{r}
+during_classified <- reclassify(during_diff_arch, reclass_during_m)
+post_classified <- reclassify(post_diff_arch, reclass_post_m)
+```
+
+Function to Plot the images
+```{r}
+plot_images <- function(classified, title){
+  plot(classified,
+     legend = FALSE,
+     col = c("blue"),
+     axes = FALSE,
+     main = title)
+
+plot(nassau[0],
+     add = TRUE)
+
+legend("bottomright",
+       legend = c("Flooded Areas"),
+       fill = c("blue"),
+       border = FALSE)
+
+prettymapr::addnortharrow(scale = 0.6, text.col = 'black', cols = c('black', 'black'))
+prettymapr::addscalebar(plotunit = 'm', widthhint = 0.25, lwd = 1, padin = c(0.15, 0.08), style = "bar", label.cex = 1.0)
+}
+```
+
+
+Plot the classified image for during
+```{r}
+title = "Flooding in Nassau Immeidately Following Hurrican Dorian"
+plot_images(during_classified, title)
+```
+
+Plot the classified image for post
+```{r}
+title = "Flooding in Nassau One Month Following Hurrican Dorian"
+plot_images(post_classified, title)
+```
+
+Find the inundated and total areas and create a data frame for it.
+```{r}
+during_area <- (sum(!is.na(during_classified[])) * xres(during_classified) * xres(during_classified)) / 1000000
+post_area <- (sum(!is.na(post_classified[])) * xres(post_classified) * xres(during_classified)) / 1000000
+total_area <- nrow(pre_masked) * ncol(pre_masked) * xres(pre_masked) * xres(pre_masked) / 1000000
+
+df <- data.frame(
+  groups = c("One Day", "One Month"),
+  inundated = c(round((during_area/total_area)*100, digits=2), round((post_area/total_area)*100, digits=2))
+  )
+```
+
+Create bargraph on percent inundated over time elapsed.
+```{r}
+bp <- ggplot(data=df, aes(x=groups, y=inundated)) +
+  geom_bar(stat="identity", width = 0.6, fill="skyblue4")+
+  geom_text(aes(label=inundated), vjust=1.6, color="white", size=5)+
+  ggtitle("Flooding Prior to Hurricane Dorian")+
+  labs(x = "Time Elapsed", y = "Percent Inundated (%)")
+bp
+```
