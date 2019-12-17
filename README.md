@@ -20,6 +20,7 @@ This is my first time working with SAR and this project will indirectly contribu
 
 ### Methodology
 In order to identify change I will be analyzing 3 SAR images, one in the month prior to Dorian, one immediately following Dorian, and one a month prior to Dorian. In order to identify areas of flooding by taking the absolute value of the each images and then subtracting them. I will show the change from pre-Dorian to during-Dorian and pre-Dorian to post-Dorian.
+It should be noted that the during-Dorian data is actually taken immediately following but has to be distinguished from the post-Dorian imagery, which was taken one month after.
 
 ### Prerequisites
 For this analysis I used 5 packages and they can be installed as shown below.
@@ -141,6 +142,10 @@ post_veg_thresh <- post_mean + 2.5*post_sd
 
 ### Visualizations and Reclassifying Data
 
+Finally, it is time to prep the data for reclassification. This will allow us to see areas of inundation following Hurricane Dorian. 
+
 ### Author
 Work by Jaimee Pyron (jp0160@mix.wvu.edu)
+
 ### Sources and Acknowledgements
+I would like to acknowledge Dr. Amy Hessl for instructing the course the course that made this project possible, my advisor Dr. Maxwell for inspiring the project, and Hartford Johnson, a good ol' pal who taught me how to make the highly functional table of contents.
