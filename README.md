@@ -1,4 +1,4 @@
-# Final Project
+# Using Sentinel-1 Synthetic Aperture Radar (SAR) to Evaluate Flooding in Nassau, Bahamas
 
 ### Table of Contents
 * [Introduction](#Introduction)
