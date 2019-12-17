@@ -25,6 +25,13 @@ It should be noted that the during-Dorian data is actually taken immediately fol
 ### Prerequisites
 For this analysis I used 5 packages and they can be installed as shown below.
 ```R
+install.packages(raster)
+install.packages(rgdal)
+install.packages(sf)
+install.packages(spatstat)
+instal.packages(ggplot2)
+install.packages(fields)
+
 library(raster)
 library(rgdal)
 library(sf)
@@ -98,20 +105,20 @@ crs(nassau)
 ### Raster Manipulation
 
 Since the goal is to analyze floding and the study area is an island, it is important to apply a mask as to not include the ocean in the analysis.
-```{r]
+```R
 pre_masked <- mask(x = pre, mask = nassau)
 during_masked <- mask(x = during, mask = nassau)
 post_masked <- mask(x = post, mask = nassau)
 ```
 
 In order to find areas of difference, the raster images are subtracted.
-```{r}
+```R
 during_diff <- during_masked - pre_masked
 post_diff <- post_masked  - pre_masked
 ```
 
 Next it is important to change areas of no change, or 0, to NA. Before doing that, archive these masked images. We will be manipulating them a lot in the next few steps and we will need to come back to this original masked image.
-```{r}
+```R
 during_diff_arch <- during_diff
 post_diff_arch <- post_diff
 during_diff[during_diff == 0] <- NA
@@ -120,7 +127,7 @@ post_diff[post_diff == 0] <- NA
 
 ### Finding Critical Values
 To find areas of inundation you must first find some important values from the images. To do this you can use cellStats from the raster package. For each difference image, during and post, calculate the mean, standard deviation, minimum, and maximum using cellStats.
-```{r}
+```R
 during_mean <- cellStats(during_diff, mean)
 post_mean <- cellStats(post_diff, mean)
 during_sd <- cellStats(during_diff, sd)
@@ -132,7 +139,7 @@ post_max = cellStats(post_diff_arch, max)
 ```
 
 Next we need to calculate the thresholds for inundated areas. These thresholds occur differently in areas that are and are not highly vegetated, so we will be accounting for both.
-```{r}
+```R
 during_inun_thresh <- during_mean - 1.5*during_sd
 post_inun_thresh <- post_mean - 1.5*post_sd
 
@@ -142,7 +149,44 @@ post_veg_thresh <- post_mean + 2.5*post_sd
 
 ### Visualizations and Reclassifying Data
 
-Finally, it is time to prep the data for reclassification. This will allow us to see areas of inundation following Hurricane Dorian. 
+Finally, it is time to prep the data for reclassification. This will allow us to see areas of inundation following Hurricane Dorian. First, values are appended to a vector with the minimum class break, maximum class break, and output class value. These are referred to as bins. Seeing as there are three bins, the vector is transformed into a 3x3 matrix.
+```R
+reclass_during <- c(-Inf, during_inun_thresh, 1,
+                    during_inun_thresh, during_veg_thresh, NA,
+                    during_veg_thresh, Inf, 1)
+reclass_during_m <- matrix(reclass_during, ncol = 3, byrow = TRUE)
+
+reclass_post <- c(-Inf, post_inun_thresh, 1,
+                  post_inun_thresh, post_veg_thresh, NA,
+                  post_veg_thresh, Inf, 1)
+reclass_post_m <- matrix(reclass_post, ncol = 3, byrow = TRUE)
+```
+
+To obtain the final reclassified raster, use the reclassify tool, taking the parameters of the archived raster image and the reclassification matrix.
+```R
+during_classified <- reclassify(during_diff_arch, reclass_during_m)
+post_classified <- reclassify(post_diff_arch, reclass_post_m)
+```
+
+Now it is time to visualize our images with the plot() function. Since both images should be symbolized in the same manner, a function is used to ensure that there is as little unnecessary variability as possible. Notably, a legend is added to the bottom right of the plot and the nassau shapefile is added in order to show the shape of the island.
+
+```R
+plot_images <- function(classified, title){
+  plot(classified,
+     legend = FALSE,
+     col = c("blue"),
+     axes = FALSE,
+     main = title)
+
+plot(nassau[0],
+     add = TRUE)
+
+legend("bottomright",
+       legend = c("Flooded Areas"),
+       fill = c("blue"),
+       border = FALSE)
+}
+```
 
 ### Author
 Work by Jaimee Pyron (jp0160@mix.wvu.edu)
