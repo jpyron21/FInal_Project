@@ -189,7 +189,7 @@ legend("bottomright",
 ```
 
 ### Author
-Work by Jaimee Pyron (jp0160@mix.wvu.edu)
+Work by Jaimee Pyron of West Virginia University
 
 ### Sources and Acknowledgements
 I would like to acknowledge Dr. Amy Hessl for instructing the course the course that made this project possible, my advisor Dr. Maxwell for inspiring the project, and Hartford Johnson, a good ol' pal who showed me how to make the highly functional table of contents.
