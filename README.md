@@ -30,14 +30,12 @@ install.packages(raster)
 install.packages(rgdal)
 install.packages(sf)
 install.packages(spatstat)
-instal.packages(ggplot2)
 install.packages(fields)
 
 library(raster)
 library(rgdal)
 library(sf)
 library(spatstat)
-library(ggplot2)
 library(fields)
 ```
 
@@ -197,6 +195,8 @@ plot_images(during_classified)
 title = "Flooding in Nassau One Month Following Hurrican Dorian"
 plot_images(post_classified)
 ```
+
+It is important to obtain qualitative values from the data. Initially I considered ggplot2 for making barplots, but the 'raster' package has a barplot function that can easily read in the raster data instead of converting this data to a usable form for ggplot2, which would be computationally expensive.
 
 ### Results and Future Study
 The objectives for this project were to test my R skills as pertaining to the scope of GEOG 693 and familiarize myself with the data. For future studies I intend to examine other single and dual polarizations, as the results from my singular 'VV' polarization analysis suggests that there are better modes for evaluating flooding in the realm of SAR data.
