@@ -17,6 +17,7 @@ library(rgdal)
 library(sf)
 library(spatstat)
 library(ggplot2)
+library(fields)
 ```
 
 ### Functions
