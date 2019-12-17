@@ -20,7 +20,7 @@ This is my first time working with SAR and this project will indirectly contribu
 
 ### Methodology
 In order to identify change I will be analyzing 3 SAR images, one in the month prior to Dorian, one immediately following Dorian, and one a month prior to Dorian. In order to identify areas of flooding by taking the absolute value of the each images and then subtracting them. I will show the change from pre-Dorian to during-Dorian and pre-Dorian to post-Dorian.
-It should be noted that the during-Dorian data is actually taken immediately following but has to be distinguished from the post-Dorian imagery, which was taken one month after.
+It should be noted that the during-Dorian data is actually taken immediately following but has to be distinguished from the post-Dorian imagery, which was taken one month after. I utilized the change detection and thresholding methodology as outlined in "Flood extent mapping in Namibia using change detection and thresholding with SAR," with changes to the input data and modifications made for a relatively flat landform [[1]](#1). I also utilized "Optimization of Threshold Ranges for Rapid Flood Inundation Mapping by Evaluating Backscatter Profiles of High Incidence Angle SAR Images" in order to make decisions regarding thresholding [[2]](#2).
 
 ### Prerequisites
 For this analysis I used 6 packages and they can be loaded as shown below.
@@ -215,10 +215,21 @@ bp
 ```
 
 ### Results and Future Study
-The objectives for this project were to test my R skills as pertaining to the scope of GEOG 693 and familiarize myself with the data. For future studies I intend to examine other single and dual polarizations, as the results from my singular 'VV' polarization analysis suggests that there are better modes for evaluating flooding in the realm of SAR data.
+The objectives for this project were to test my R skills as pertaining to the scope of GEOG 693 and familiarize myself with the data. The results were not perfect, as they showed little change of flooding in 1 months time with a curiously low initial percent flooded, but this will help guide me on what direction I will be taking my thesis. For future studies I intend to examine other single and dual polarizations, as the results from my singular 'VV' polarization analysis suggests that there are better modes for evaluating flooding in the realm of SAR data.
 
 ### Author
 Work by Jaimee Pyron of West Virginia University
 
 ### Sources and Acknowledgements
 I would like to acknowledge Dr. Amy Hessl for instructing the course the course that made this project possible, my advisor Dr. Maxwell for inspiring the project, and Hartford Johnson, a good ol' pal who showed me how to make the highly functional table of contents.
+
+<a id="1">[1]</a> 
+Long, S., T. Fatoyinbo, and F. Policelli. (2014).
+Flood extent mapping for Namibia using change detection and thresholding with SAR.
+Environmental Research Letters, 9.
+
+<a id="2">[2]</a>
+Manjusree, P., P. Kumar, C. Bhatt, G. Rao, and V. Bhanumurthy. (2012).
+Optimization of Threshold Ranges for Rapid Flood Inundation Mapping
+by Backscatter Profiles of High Incidence Angle SAR Images.
+Int. J. Disaster Risk Sci, 3(2): 113-122.
