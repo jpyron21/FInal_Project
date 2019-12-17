@@ -118,7 +118,22 @@ post_diff[post_diff == 0] <- NA
 ```
 
 ### Finding Critical Values
-To find areas of inundation you must first find some important values from the images. To do this you can use cellStats from the raster package.
+To find areas of inundation you must first find some important values from the images. To do this you can use cellStats from the raster package. For each difference image, during and post, calculate the mean, standard deviation, minimum, and maximum using cellStats.
+```{r}
+during_mean <- cellStats(during_diff, mean)
+post_mean <- cellStats(post_diff, mean)
+during_sd <- cellStats(during_diff, sd)
+post_sd <- cellStats(post_diff, sd)
+during_min = cellStats(during_diff_arch, min)
+post_min = cellStats(post_diff_arch, min)
+during_max = cellStats(during_diff_arch, max)
+post_max = cellStats(post_diff_arch, max)
+```
+
+```{r}
+during_inun_thresh <- during_mean - 1.5*during_sd
+post_inun_thresh <- post_mean - 1.5*post_sd
+```
 
 ### Visualizations and Reclassifying Data
 
