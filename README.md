@@ -12,15 +12,15 @@
 * [Author](#Author)
 * [Sources and Acknowledgements](#Sources-and-Acknowledgements)
 ### Introduction
-In the age of data science, there is a shift in geospatial processing from a traditional GIS to R. Raster processing is especially useful in R as it provides a fast way to read data and transform data in a less-complex file format. While this will provide a more complex set of instruction, the attached .Rmd file can be used to test the code.
+In the age of data science, there is a shift in geospatial processing from a traditional GIS to R. Raster processing is especially useful in R as it provides a fast way to read data and transform data in a less-complex file format. I have tested the usability of R in my study as I sought to evluate flooding in Nassau, Bahamas following Hurrican Dorian. While this will provide a more complex set of instruction, the attached .Rmd file can be used to test the code.
 
 ### Objective
-I will be using Sentinel-1 SAR (synthetic aperture radar) data to evaluate flooding in Nassau, Bahamas from Hurricane Dorian.
+I used Sentinel-1 SAR (synthetic aperture radar) data to evaluate flooding in Nassau, Bahamas from Hurricane Dorian.
 This is my first time working with SAR and this project will indirectly contribute to my thesis, as I intend to use R and machine learning techniques to identify wetlands. 
 
 ### Methodology
-In order to identify change I will be analyzing 3 SAR images, one in the month prior to Dorian, one immediately following Dorian, and one a month prior to Dorian. In order to identify areas of flooding by taking the absolute value of the each images and then subtracting them. I will show the change from pre-Dorian to during-Dorian and pre-Dorian to post-Dorian.
-It should be noted that the during-Dorian data is actually taken immediately following but has to be distinguished from the post-Dorian imagery, which was taken one month after. I utilized the change detection and thresholding methodology as outlined in "Flood extent mapping in Namibia using change detection and thresholding with SAR," with changes to the input data and modifications made for a relatively flat landform [[1]](#1). I also utilized "Optimization of Threshold Ranges for Rapid Flood Inundation Mapping by Evaluating Backscatter Profiles of High Incidence Angle SAR Images" in order to make decisions regarding thresholding [[2]](#2).
+In order to identify change I will be analyzing 3 SAR images, one in the month prior to Dorian, one immediately following Dorian, and one a month prior to Dorian. In order to identify areas of flooding by taking the absolute value of the each images and then subtracting them. I will show the change from pre-Dorian to during-Dorian and pre-Dorian to post-Dorian. I utilized the change detection and thresholding methodology as outlined in "Flood extent mapping in Namibia using change detection and thresholding with SAR," with changes to the input data and modifications made for a relatively flat landform [[1]](#1). I also utilized "Optimization of Threshold Ranges for Rapid Flood Inundation Mapping by Evaluating Backscatter Profiles of High Incidence Angle SAR Images" in order to make decisions regarding thresholding [[2]](#2).
+It should be noted that the during-Dorian data is actually taken immediately following but has to be distinguished from the post-Dorian imagery, which was taken one month after. 
 
 ### Prerequisites
 For this analysis I used 6 packages and they can be loaded as shown below.
