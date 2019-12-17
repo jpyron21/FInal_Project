@@ -148,4 +148,4 @@ Finally, it is time to prep the data for reclassification. This will allow us to
 Work by Jaimee Pyron (jp0160@mix.wvu.edu)
 
 ### Sources and Acknowledgements
-I would like to acknowledge Dr. Amy Hessl for instructing the course the course that made this project possible, my advisor Dr. Maxwell for inspiring the project, and Hartford Johnson, a good ol' pal who taught me how to make the highly functional table of contents.
+I would like to acknowledge Dr. Amy Hessl for instructing the course the course that made this project possible, my advisor Dr. Maxwell for inspiring the project, and Hartford Johnson, a good ol' pal who showed me how to make the highly functional table of contents.
