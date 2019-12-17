@@ -103,7 +103,22 @@ during_masked <- mask(x = during, mask = nassau)
 post_masked <- mask(x = post, mask = nassau)
 ```
 
+In order to find areas of difference, the raster images are subtracted.
+```{r}
+during_diff <- during_masked - pre_masked
+post_diff <- post_masked  - pre_masked
+```
+
+Next it is important to change areas of no change, or 0, to NA. Before doing that, archive these masked images. We will be manipulating them a lot in the next few steps and we will need to come back to this original masked image.
+```{r}
+during_diff_arch <- during_diff
+post_diff_arch <- post_diff
+during_diff[during_diff == 0] <- NA
+post_diff[post_diff == 0] <- NA
+```
+
 ### Finding Critical Values
+To find areas of inundation you must first find some important values from the images. To do this you can use cellStats from the raster package.
 
 ### Visualizations and Reclassifying Data
 
