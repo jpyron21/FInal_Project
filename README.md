@@ -1,5 +1,14 @@
 # Final Project
 
+### Table of Contents
+* [Introduction](#Introduction)
+* [Objective](#Objective)
+* [Methodology](#Methodology)
+* [Prerequisites](#Prerequisites)
+* [Preprocessing Data](#Preprocessing-Data)
+* [Finding Critical Values](#Finding-Critical-Values)
+* [Visualizations and Reclassifying Data](#Visualizations-and-Reclassifying-Data)
+* [Sources and Acknowledgements](#Sources-and-Acknowledgements)
 ### Introduction
 In the age of data science, there is a shift in geospatial processing from a traditional GIS to R. Raster processing is especially useful in R as it provides a fast way to read data and transform data in a less-complex file format. While this will provide a more complex set of instruction, the attached .Rmd file can be used to test the code.
 
