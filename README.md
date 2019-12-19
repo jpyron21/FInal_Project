@@ -182,6 +182,7 @@ prettymapr::addnortharrow(scale = 0.6, text.col = 'black', cols = c('black', 'bl
 prettymapr::addscalebar(plotunit = 'm', widthhint = 0.25, lwd = 1, padin = c(0.15, 0.08), style = "bar", label.cex = 1.0)
 }
 ```
+INCLUDE IMAGE HERE FOR THE README
 
 To create maps of the analysis, we can initialize the title for each map and call the plot_images() function with the data and title as parameters.
 ```R
@@ -191,6 +192,7 @@ plot_images(during_classified)
 title = "Flooding in Nassau One Month Following Hurrican Dorian"
 plot_images(post_classified)
 ```
+IMAGE HERE
 
 It is important to obtain qualitative values from the data. I used ggplot2 to create a simple bargraph of percent inundation to visualize these qualitative values. First, I had to calculate the area of the total landmass and the inundated areas. I set them up in a data.frame to be more compatible with ggplot.
 ```R
@@ -213,6 +215,7 @@ df <- data.frame(
   labs(x = "Time Elapsed", y = "Percent Inundated (%)")
 bp
 ```
+IMAGE HERE
 
 ### Results and Future Study
 The objectives for this project were to test my R skills as pertaining to the scope of GEOG 693 and familiarize myself with the data. The results were not perfect, as they showed little change of flooding in 1 months time with a curiously low initial percent flooded, but this will help guide me on what direction I will be taking my thesis. For future studies I intend to examine other single and dual polarizations, as the results from my singular 'VV' polarization analysis suggests that there are better modes for evaluating flooding in the realm of SAR data.
