@@ -192,6 +192,10 @@ title = "Flooding in Nassau One Month Following Hurrican Dorian"
 plot_images(post_classified)
 ```
 
+![During Dorian](https://github.com/jpyron21/FInal_Project/blob/master/immediately.JPG)
+
+![After Dorian](https://github.com/jpyron21/FInal_Project/blob/master/onemonth.JPG)
+
 It is important to obtain qualitative values from the data. I used ggplot2 to create a simple bargraph of percent inundation to visualize these qualitative values. First, I had to calculate the area of the total landmass and the inundated areas. I set them up in a data.frame to be more compatible with ggplot.
 ```R
 during_area <- (sum(!is.na(during_classified[])) * xres(during_classified) * xres(during_classified)) / 1000000
@@ -213,6 +217,7 @@ df <- data.frame(
   labs(x = "Time Elapsed", y = "Percent Inundated (%)")
 bp
 ```
+![Bar Plot](https://github.com/jpyron21/FInal_Project/blob/master/plot.JPG)
 
 ### Results and Future Study
 The objectives for this project were to test my R skills as pertaining to the scope of GEOG 693 and familiarize myself with the data. The results were not perfect, as they showed little change of flooding in 1 months time with a curiously low initial percent flooded, but this will help guide me on what direction I will be taking my thesis. For future studies I intend to examine other single and dual polarizations, as the results from my singular 'VV' polarization analysis suggests that there are better modes for evaluating flooding in the realm of SAR data.
